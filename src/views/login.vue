@@ -1,14 +1,14 @@
 <template>
-  <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="120px" class="demo-ruleForm">
-    <el-form-item label="账号" prop="age">
-      <el-input v-model.number="ruleForm.age" />
+  <el-form ref="LoginFormRef" :model="userInfo" status-icon :rules="rules" label-width="120px" class="demo-ruleForm">
+    <el-form-item label="账号" prop="username">
+      <el-input v-model.number="userInfo.username" />
     </el-form-item>
-    <el-form-item label="密码" prop="pass">
-      <el-input v-model="ruleForm.pass" type="password" autocomplete="off" />
+    <el-form-item label="密码" prop="password">
+      <el-input v-model="userInfo.password" type="password" autocomplete="off" />
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="submitForm(ruleFormRef)">提交</el-button>
-      <el-button @click="resetForm(ruleFormRef)">重置</el-button>
+      <el-button type="primary" @click="submitForm(LoginFormRef)">提交</el-button>
+      <el-button @click="resetForm(LoginFormRef)">重置</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -18,22 +18,30 @@
 <script lang="ts" >
 import { reactive, ref } from 'vue'
 import type { FormInstance } from 'element-plus'
+import router from '../router'
 export default {
   setup() {
-    const ruleFormRef = ref<FormInstance>()
+    const LoginFormRef = ref<FormInstance>()
+    const userInfo = reactive({
+      password: '',
+      username: '',
+    })
     const ruleForm = reactive({
-      pass: '',
+      password: '',
       checkPass: '',
-      age: '',
+      username: '',
     })
     const rules = reactive({
-      pass: [{ validator: validatePass, trigger: 'blur' }],
+      password: [{ validator: validatePass, trigger: 'blur' }],
       checkPass: [{  trigger: 'blur' }],
-      age: [{ validator: checkAge, trigger: 'blur' }],
+      username: [{ validator: checkAge, trigger: 'blur' }],
     })
     function checkAge(rule: any, value: any, callback: any) {
       if (!value) {
         return callback(new Error('请输入你的账号'))
+      }
+      else {
+        callback()
       }
     }
     function validatePass(rule: any, value: any, callback: any) {
@@ -41,8 +49,8 @@ export default {
         callback(new Error('请输入你的密码'))
       } else {
         if (ruleForm.checkPass !== '') {
-          if (!ruleFormRef.value) return
-          ruleFormRef.value.validateField('checkPass', () => null)
+          if (!LoginFormRef.value) return
+          LoginFormRef.value.validateField('checkPass', () => null)
         }
         callback()
       }
@@ -56,7 +64,13 @@ export default {
       if (!formEl) return
       formEl.validate((valid) => {
         if (valid) {
-          console.log('submit!')
+          if(userInfo.username == "zhangsan" && userInfo.password == "123456"){
+            console.log("登陆成功");
+            router.push('/student')
+          }
+          else {
+            alert("登录失败")
+          }
         }
         else {
           console.log('error submit!')
@@ -66,14 +80,15 @@ export default {
     }
     return {
       reactive,
-      ruleFormRef,
-      ruleForm,
+      LoginFormRef,
       rules,
       checkAge,
       validatePass,
       resetForm,
-      submitForm
-    }
+      submitForm,
+      ruleForm,
+      userInfo
+      }
   }
 }
 
