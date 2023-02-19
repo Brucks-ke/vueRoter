@@ -65,7 +65,7 @@ export default {
       formEl.validate((valid) => {
         if (valid) {
           if(userInfo.username == "zhangsan" && userInfo.password == "123456"){
-            console.log("登陆成功");
+            localStorage.setItem('token',"已登录")
             router.push('/student')
           }
           else {
