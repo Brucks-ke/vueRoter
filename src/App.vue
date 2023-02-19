@@ -3,11 +3,8 @@
   <router-view></router-view>
 </template>
 
-<script>
+<style></style>
+
+<script lang="ts" setup>
 
 </script>
-
-<style>
-
-</style>
-

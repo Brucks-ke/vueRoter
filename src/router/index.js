@@ -3,9 +3,14 @@ import {createRouter,createWebHistory} from 'vue-router'
 const routes = [
     // 每一个路由地址都是花括号
     {
-        path:"/login",
+        path:"/",
         name:"Login",
-        components:() => import('../views/login.vue')
+        component:() => import('../views/login.vue')
+    },
+    {
+        path:"/Student",
+        name:"student",
+        component:() => import('../views/studentList.vue')
     }
 ]
 
